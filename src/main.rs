@@ -1,8 +1,8 @@
 use std::time::SystemTime;
 
-fn rng(min: u32, max: u32) -> u64{
+fn rng(min: u64, max: u64) -> u64{
     match SystemTime::now().duration_since(SystemTime::UNIX_EPOCH) {
-        Ok(n) => (n.as_secs() * 3543776743 + 3576876877) % ((max-min) as u64) + (min as u64),
+        Ok(n) => (n.as_secs() * 3543776743 + 3576876877) % (max-min) + min,
         Err(_) => panic!("SystemTime before UNIX EPOCH!"),
     }
 }
