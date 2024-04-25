@@ -8,4 +8,4 @@ Made for fun, probably won't be any decent.
 
 Add folowing line to your `Cargo.toml` dependencies
 
-`regex = { git = "https://github.com/decency131/drng.git" }`
+`drng = { git = "https://github.com/decency131/drng.git" }`
