@@ -21,3 +21,11 @@ pub fn rng_seq(min: u64, max: u64, len: usize) -> Vec<u128>{
         Err(_) => panic!("SystemTime before UNIX EPOCH!"),
     }
 }
+
+pub fn shuffle<T>(mut arr: Vec<T>) -> Vec<T>{
+    for i in 0..arr.len(){
+        let j = rng(0, i as u64);
+        arr.swap(i, j as usize);
+    }  
+    arr
+}
