@@ -1,5 +1,6 @@
 use std::time::SystemTime;
 
+
 pub fn rng(min: u64, max: u64) -> u128{
     match SystemTime::now().duration_since(SystemTime::UNIX_EPOCH) {
         Ok(n) => (n.as_nanos() * 354377617451454163 + 35768279713976877) % ((max-min+1) as u128) + (min as u128),
@@ -22,10 +23,26 @@ pub fn rng_seq(min: u64, max: u64, len: usize) -> Vec<u128>{
     }
 }
 
-pub fn shuffle<T>(mut arr: Vec<T>) -> Vec<T>{
-    for i in 0..arr.len(){
-        let j = rng(0, i as u64);
-        arr.swap(i, j as usize);
-    }  
-    arr
+pub trait Shuffle{
+    fn shuffle(self) -> Self;
+}
+
+impl<T> Shuffle for Vec <T> {
+    fn shuffle(mut self) -> Self{
+        for i in 1..self.len(){
+            let j = rng(0, i as u64);
+            self.swap(i, j as usize);
+        }  
+        self
+    }
+}
+
+impl<T, const N: usize> Shuffle for [T; N]{
+    fn shuffle(mut self) -> Self{
+        for i in 1..self.len(){
+            let j = rng(0, i as u64);
+            self.swap(i, j as usize);
+        }  
+        self
+    }
 }
