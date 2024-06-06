@@ -4,11 +4,11 @@ use std::time::SystemTime;
 pub fn rng(min: u64, max: u64) -> u128{
     match SystemTime::now().duration_since(SystemTime::UNIX_EPOCH) {
         Ok(n) => (n.as_nanos() * 354377617451454163 + 35768279713976877) % ((max-min+1) as u128) + (min as u128),
-        Err(_) => panic!("SystemTime before UNIX EPOCH!"),
+        Err(_) => panic!("SytemTime before UNIX EPOCH!"),
     }
 }
 
-pub fn rng_seq(min: u64, max: u64, len: usize) -> Vec<u128>{
+pub fn rng_seq(min: u64, max: u64, len: usize) -> Box<dyn Iterator<Item = u128>> {
     match SystemTime::now().duration_since(SystemTime::UNIX_EPOCH) {
         Ok(n) => {
             let mut seq: Vec<u128> = Vec::with_capacity(len);
@@ -17,7 +17,7 @@ pub fn rng_seq(min: u64, max: u64, len: usize) -> Vec<u128>{
                 x = (x * 354377617451454163 + 35768279713976877) % ((max-min+1) as u128) + (min as u128);
                 seq.push(x);
             }
-            seq
+            Box::new(seq.into_iter())
         },
         Err(_) => panic!("SystemTime before UNIX EPOCH!"),
     }
